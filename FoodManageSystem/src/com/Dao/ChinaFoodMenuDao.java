@@ -21,7 +21,6 @@ public class ChinaFoodMenuDao {
 		return chinainstance;
 	}
 	
-	
 	private ChinaFoodMenuDao() {	
 		try {
 			conn = DBConnector.getConnection();

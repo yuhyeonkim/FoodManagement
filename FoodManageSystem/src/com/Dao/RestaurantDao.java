@@ -9,6 +9,7 @@ import com.bean.Restaurant;
 public class RestaurantDao {
 	
 	private static RestaurantDao restinstance;
+	Connection conn;
 	
 	// 객체를 대신 만들어주는 메소드
 	public static RestaurantDao getInstance() {
@@ -20,11 +21,17 @@ public class RestaurantDao {
 		return restinstance;
 	}
 	
-	Connection conn;
+	private RestaurantDao() {	
+		try {
+			conn = DBConnector.getConnection();
+			System.out.println("Connection 객체 연결 성공!");	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	// 음식점 등록 메서드
 	public void restInsert(Restaurant r) throws Exception {
 		
-		conn = DBConnector.getConnection();
 		// 메뉴를 insert하기 위해 필요
 		PreparedStatement pstmt=null;
 		String sql = null;
@@ -52,7 +59,6 @@ public class RestaurantDao {
 	// 음식점 삭제 메서드(음식점 번호seq로 삭제)
 	public void restDelete(int rest_seq) throws Exception {
 			
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt = null;
 		String sql = null;
 			
@@ -74,7 +80,6 @@ public class RestaurantDao {
 	// 음식점 수정 테이블(rest_seq 번호로 검사)
 	public void restUpdate(Restaurant r) throws Exception {
 		
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt = null;
 		String sql = null;
 		

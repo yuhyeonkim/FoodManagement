@@ -9,6 +9,7 @@ import com.bean.GopMenu;
 public class GopMenuDao {
 	
 	private static GopMenuDao gopinstance;
+	Connection conn;
 	
 	// 객체를 대신 만들어주는 메소드
 	public static GopMenuDao getInstance() {
@@ -20,11 +21,16 @@ public class GopMenuDao {
 		return gopinstance;
 	}
 	
-	Connection conn;
-	
+	private GopMenuDao() {	
+		try {
+			conn = DBConnector.getConnection();
+			System.out.println("Connection 객체 연결 성공!");	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public void gopMenuInsert(GopMenu gm) throws Exception {
 		
-		conn = DBConnector.getConnection();
 		// 메뉴를 insert하기 위해 필요
 		PreparedStatement pstmt=null;
 		String sql = null;
@@ -53,7 +59,6 @@ public class GopMenuDao {
 	// 대한곱창 메뉴 삭제 메서드(메뉴 번호로 삭제)
 	public void gopMenuDelete(int gop_seq) throws Exception {
 			
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt = null;
 		String sql = null;
 			
@@ -74,7 +79,6 @@ public class GopMenuDao {
 	// 대한곱창 메뉴 수정 테이블(gop_seq 메뉴 번호로 검사)
 	public void gopMenuUpdate(GopMenu gm) throws Exception {
 		
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt = null;
 		String sql = null;
 		

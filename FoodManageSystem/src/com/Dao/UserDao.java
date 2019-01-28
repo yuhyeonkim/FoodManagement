@@ -11,6 +11,7 @@ import com.bean.User;
 public class UserDao {
 	
 	private static UserDao userinstance;
+	Connection conn;
 	
 	// 객체를 대신 만들어주는 메소드
 	public static UserDao getInstance() {
@@ -21,12 +22,19 @@ public class UserDao {
 		// 그 다음부터 -> 만들어진 객체의 주소를 반환
 		return userinstance;
 	}
-	Connection conn;
+	
+	private UserDao() {	
+		try {
+			conn = DBConnector.getConnection();
+			System.out.println("Connection 객체 연결 성공!");	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	// 사용자 등록 메서드
 	public void userInsert(User u) throws Exception {
 		
-		conn = DBConnector.getConnection();
 		// 메뉴를 insert하기 위해 필요
 		PreparedStatement pstmt=null;
 		String sql = null;
@@ -59,7 +67,6 @@ public class UserDao {
 	// 사용자 삭제 메서드(사용자 번호로 삭제)
 	public void userDelete(int user_seq) throws Exception {
 			
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt = null;
 		String sql = null;
 			
@@ -80,7 +87,6 @@ public class UserDao {
 	// 사용자 수정 테이블(user_seq 메뉴 번호로 검사)
 	public void userUpdate(User u) throws Exception {
 		
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt = null;
 		String sql = null;
 		
@@ -111,7 +117,6 @@ public class UserDao {
 	// 사용자 조회 메서드(user_id 로 검색)
 	public void userSelect(String user_id) throws Exception{
 		
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt=null;
 		String sql = null;
 		
@@ -133,7 +138,6 @@ public class UserDao {
 	// 사용자 주소에 따른 음식점 조회
 	public void userLocRest(String user_loc) throws Exception{
 		
-		conn = DBConnector.getConnection();
 		Statement stmt=null;
 		String sql = null;
 		

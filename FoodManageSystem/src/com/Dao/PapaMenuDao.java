@@ -8,6 +8,7 @@ import com.bean.PapaMenu;
 public class PapaMenuDao {
 
 	private static PapaMenuDao papainstance;
+	Connection conn;
 	
 	// 객체를 대신 만들어주는 메소드
 	public static PapaMenuDao getInstance() {
@@ -18,11 +19,17 @@ public class PapaMenuDao {
 		// 그 다음부터 -> 만들어진 객체의 주소를 반환
 		return papainstance;
 	}
-	Connection conn;
 	
+	private PapaMenuDao() {	
+		try {
+			conn = DBConnector.getConnection();
+			System.out.println("Connection 객체 연결 성공!");	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public void papaMenuInsert(PapaMenu pm) throws Exception {
 		
-		conn = DBConnector.getConnection();
 		// 메뉴를 insert하기 위해 필요
 		PreparedStatement pstmt=null;
 		String sql = null;
@@ -51,7 +58,6 @@ public class PapaMenuDao {
 	// 파파존스 메뉴 삭제 메서드(메뉴 번호로 삭제)
 	public void papaMenuDelete(int papa_seq) throws Exception {
 			
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt = null;
 		String sql = null;
 			
@@ -72,7 +78,6 @@ public class PapaMenuDao {
 	// 파파존스 메뉴 수정 테이블(papa_seq 메뉴 번호로 검사)
 	public void dduckMenuUpdate(PapaMenu pm) throws Exception {
 		
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt = null;
 		String sql = null;
 		

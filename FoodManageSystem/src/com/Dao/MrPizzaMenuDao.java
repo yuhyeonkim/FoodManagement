@@ -8,6 +8,7 @@ import com.bean.MrPizzaMenu;
 public class MrPizzaMenuDao {
 	
 	private static MrPizzaMenuDao pizzainstance;
+	Connection conn;
 	
 	// 객체를 대신 만들어주는 메소드
 	public static MrPizzaMenuDao getInstance() {
@@ -19,12 +20,18 @@ public class MrPizzaMenuDao {
 		return pizzainstance;
 	}
 	
-	Connection conn;
+	private MrPizzaMenuDao() {	
+		try {
+			conn = DBConnector.getConnection();
+			System.out.println("Connection 객체 연결 성공!");	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	// 미스터피자 메뉴 등록 메서드
 	// 미스터피자 식당 눌러서 신규 버튼 누르면 나오는 화면에서
 	public void mrpizzaMenuInsert(MrPizzaMenu mpm) throws Exception {
 		
-		conn = DBConnector.getConnection();
 		// 메뉴를 insert하기 위해 필요
 		PreparedStatement pstmt=null;
 		String sql = null;
@@ -53,7 +60,6 @@ public class MrPizzaMenuDao {
 	// 맥도날드 메뉴 삭제 메서드(메뉴 번호로 삭제)
 	public void mrpizzaMenuDelete(int mrpizza_seq) throws Exception {
 			
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt = null;
 		String sql = null;
 			
@@ -74,7 +80,6 @@ public class MrPizzaMenuDao {
 	// 맥도날드 메뉴 수정 테이블(mac_seq 메뉴 번호로 검사)
 	public void mrpizzaMenuUpdate(MrPizzaMenu mpm) throws Exception {
 		
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt = null;
 		String sql = null;
 		

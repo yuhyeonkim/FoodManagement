@@ -9,6 +9,7 @@ import com.bean.JokbalMenu;
 public class JokbalMenuDao {
 
 	private static JokbalMenuDao jokbalinstance;
+	Connection conn;
 	
 	// 객체를 대신 만들어주는 메소드
 	public static JokbalMenuDao getInstance() {
@@ -20,12 +21,18 @@ public class JokbalMenuDao {
 		return jokbalinstance;
 	}
 	
-	Connection conn;
+	private JokbalMenuDao() {	
+		try {
+			conn = DBConnector.getConnection();
+			System.out.println("Connection 객체 연결 성공!");	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	// 장충동 왕족발 메뉴 등록 메서드
 	// 장충동 왕족발 식당 눌러서 신규 버튼 누르면 나오는 화면에서
 	public void jokbalMenuInsert(JokbalMenu jm) throws Exception {
 		
-		conn = DBConnector.getConnection();
 		// 메뉴를 insert하기 위해 필요
 		PreparedStatement pstmt=null;
 		String sql = null;
@@ -54,7 +61,6 @@ public class JokbalMenuDao {
 	// 왕족발 메뉴 삭제 메서드(메뉴 번호로 삭제)
 	public void	jokbalMenuDelete(int jokbal_seq) throws Exception {
 			
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt = null;
 		String sql = null;
 			
@@ -75,7 +81,6 @@ public class JokbalMenuDao {
 	// 왕족발 메뉴 수정 테이블(dduck_seq 메뉴 번호로 검사)
 	public void jokbalMenuUpdate(JokbalMenu jm) throws Exception {
 		
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt = null;
 		String sql = null;
 		

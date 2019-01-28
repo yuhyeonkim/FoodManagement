@@ -9,6 +9,7 @@ import com.bean.MrPizzaMenu;
 public class DduckMenuDao {
 	
 	private static DduckMenuDao dduckinstance;
+	Connection conn;
 	
 	// 객체를 대신 만들어주는 메소드
 	public static DduckMenuDao getInstance() {
@@ -20,12 +21,19 @@ public class DduckMenuDao {
 		return dduckinstance;
 	}
 	
-	Connection conn;
+	private DduckMenuDao() {	
+		try {
+			conn = DBConnector.getConnection();
+			System.out.println("Connection 객체 연결 성공!");	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	// 불닭발 엽기 떡볶이 메뉴 등록 메서드
 	// 불닭발 엽기 떡볶이 식당 눌러서 신규 버튼 누르면 나오는 화면에서
 	public void dduckMenuInsert(DduckMenu dm) throws Exception {
 		
-		conn = DBConnector.getConnection();
 		// 메뉴를 insert하기 위해 필요
 		PreparedStatement pstmt=null;
 		String sql = null;
@@ -54,7 +62,6 @@ public class DduckMenuDao {
 	// 떡볶이 메뉴 삭제 메서드(메뉴 번호로 삭제)
 	public void dduckMenuDelete(int dduck_seq) throws Exception {
 			
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt = null;
 		String sql = null;
 			
@@ -75,7 +82,6 @@ public class DduckMenuDao {
 	// 떡볶이 메뉴 수정 테이블(dduck_seq 메뉴 번호로 검사)
 	public void dduckMenuUpdate(DduckMenu dm) throws Exception {
 		
-		conn = DBConnector.getConnection();
 		PreparedStatement pstmt = null;
 		String sql = null;
 		
