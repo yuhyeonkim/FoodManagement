@@ -115,7 +115,7 @@ public class MacMenuService {
 			}
 		}
 		
-		// 음식점 삭제 번호 검사 메서드
+		// 맥도날드 메뉴 삭제 번호 검사 메서드
 		public int macSeqExamine(int mac_seq) {
 			
 			String sql = "select mac_seq from mac_menu where mac_seq =? ";
