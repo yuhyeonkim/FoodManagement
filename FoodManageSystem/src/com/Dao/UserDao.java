@@ -2,10 +2,10 @@ package com.Dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.bean.DduckMenu;
-import com.bean.Restaurant;
 import com.bean.User;
 
 public class UserDao {
@@ -33,35 +33,46 @@ public class UserDao {
 	}
 	
 	// 사용자 등록 메서드
-	public void userInsert(User u) throws Exception {
+	public void userInsert(User u) {
 		
 		// 메뉴를 insert하기 위해 필요
 		PreparedStatement pstmt=null;
 		String sql = null;
 		
-		sql ="insert into user_table(user_seq, user_sex, user_name,"
-				+ " user_id, user_pw, user_phone, user_loc, user_manage) "
+		sql ="insert into user_table(user_seq, user_sex, user_name, "
+				+"user_id, user_pw, user_phone, user_loc, user_manage) "
 				+"values(?, ?, ?, ?, ?, ?, ?, ?) ";
 		
-		pstmt = conn.prepareStatement(sql);
-		
-		pstmt.setInt(1, u.getUser_seq());
-		pstmt.setInt(2, u.getUser_sex());
-		pstmt.setString(3, u.getUser_name());
-		pstmt.setString(4, u.getUser_id());
-		pstmt.setString(5, u.getUser_pw());
-		pstmt.setString(6, u.getUser_phone());
-		pstmt.setString(7, u.getUser_loc());
-		pstmt.setInt(8, u.getUser_manage());
-		
-		pstmt.executeUpdate();
-		// 확인차 출력
-		System.out.println(u+"가 등록되었습니다");
-		
-		if(pstmt.isClosed() || pstmt ==null) {
-			pstmt.close();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, u.getUser_seq());
+			pstmt.setInt(2, u.getUser_sex());
+			pstmt.setString(3, u.getUser_name());
+			pstmt.setString(4, u.getUser_id());
+			pstmt.setString(5, u.getUser_pw());
+			pstmt.setString(6, u.getUser_phone());
+			pstmt.setString(7, u.getUser_loc());
+			pstmt.setInt(8, u.getUser_manage());
+			
+			pstmt.executeUpdate();
+			// 확인차 출력
+			System.out.println(u+"가 등록되었습니다");
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
 		}
-		conn.close();
+		finally {
+			try {
+				if(pstmt.isClosed() || pstmt ==null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+			
+		}
 	}
 	
 	// 사용자 삭제 메서드(사용자 번호로 삭제)
@@ -82,7 +93,7 @@ public class UserDao {
 		if(pstmt.isClosed() || pstmt ==null) {
 			pstmt.close();
 		}
-		conn.close();
+		
 	}
 	// 사용자 수정 테이블(user_seq 메뉴 번호로 검사)
 	public void userUpdate(User u) throws Exception {
@@ -111,7 +122,7 @@ public class UserDao {
 		if(pstmt.isClosed() || pstmt ==null) {
 			pstmt.close();
 		}
-		conn.close();
+		
 	}
 	
 	// 사용자 조회 메서드(user_id 로 검색)
@@ -133,7 +144,7 @@ public class UserDao {
 		if(pstmt.isClosed() || pstmt ==null) {
 			pstmt.close();
 		}
-		conn.close();
+		
 	}
 	// 사용자 주소에 따른 음식점 조회
 	public void userLocRest(String user_loc) throws Exception{
@@ -153,7 +164,33 @@ public class UserDao {
 		if(stmt.isClosed() || stmt ==null) {
 			stmt.close();
 		}
-		conn.close();
+		
 	}	
+	
+	// 사용자 마지막 번호 얻어오기
+	public int userSeqRest() throws Exception{
+		
+		Statement stmt=null;
+		String sql = null;
+		ResultSet rs = null;
+		int i = 0;
+		
+		sql = "select max(user_seq)as max from user_table ";
+		
+		stmt = conn.createStatement();
+		
+		rs = stmt.executeQuery(sql);
+		while(rs.next()) {
+			i = rs.getInt("max");
+		}
+		System.out.println("사용자 번호 최대값은 "+i+"입니다");
+		
+		if(stmt.isClosed() || stmt ==null) {
+			stmt.close();
+		}
+		
+		return i;
+		
+	}
 		
 }
